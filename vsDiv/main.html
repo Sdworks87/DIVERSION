@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrapChain — India's Waste Intelligence Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Scrap<span>Chain</span></div>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+  <button class="nav-cta">Get Started</button>
+</nav>
+
+<!-- PRICE TICKER -->
+<div class="price-ticker">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">India's Circular Economy Network</div>
+    <h1>THE <em>AMAZON</em><br>OF WASTE</h1>
+    <p class="hero-sub">ScrapChain bridges the informal Kabadi-wala network with industrial recyclers — bringing price transparency, digital payments, and EPR compliance to India's ₹2.02B scrap economy.</p>
+    <div class="hero-actions">
+      <a href="#ecosystem" class="btn-primary">Join the Network</a>
+      <a href="#how" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-card fade-in">
+        <span class="stat-num">₹2.02B</span>
+        <div class="stat-label">E-Waste Market by 2026</div>
+      </div>
+      <div class="stat-card fade-in">
+        <span class="stat-num">90%</span>
+        <div class="stat-label">Still handled informally</div>
+      </div>
+      <div class="stat-card fade-in">
+        <span class="stat-num">50+</span>
+        <div class="stat-label">Material categories tracked daily</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bg-text">♻</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-label">Process</div>
+  <h2>Three Sides,<br>One Chain</h2>
+  <p style="color:var(--muted);max-width:520px;font-size:16px;margin-top:12px;">A transparent, end-to-end waste intelligence platform connecting households, kabadi-walas, and industrial recyclers.</p>
+  <div class="how-grid">
+    <div class="how-step fade-in">
+      <div class="step-num">01</div>
+      <div class="step-icon">📦</div>
+      <h3>Schedule Pickup</h3>
+      <p>Households upload a photo. Our AI Vision Engine instantly identifies material types and provides a live price estimate before the kabadi-wala arrives.</p>
+    </div>
+    <div class="how-step fade-in">
+      <div class="step-num">02</div>
+      <div class="step-icon">⚖️</div>
+      <h3>Digital Weighing</h3>
+      <p>The kabadi-wala uses a Bluetooth-integrated digital scale. Weight is synced to the app in real time, and UPI payment is triggered automatically — zero haggling, zero cheating.</p>
+    </div>
+    <div class="how-step fade-in">
+      <div class="step-num">03</div>
+      <div class="step-icon">🏭</div>
+      <h3>Industrial Sale</h3>
+      <p>Aggregated, sorted, and certified scrap volumes are sold directly to industrial recyclers at premium rates, with automatic EPR certificate generation for compliance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<section id="platform" class="platform-section">
+  <div class="platform-grid">
+    <div class="platform-sticky">
+      <div class="section-label">Live Dashboard</div>
+      <h2>The Scrap<br>Intelligence<br>Hub</h2>
+      <p style="color:var(--muted);font-size:15px;line-height:1.7;margin-top:16px;">Real-time price data, AI material recognition, blockchain-backed receipts, and a government-ready EPR portal — all in one platform.</p>
+      <div class="dashboard-mock" style="margin-top:36px;">
+        <div class="mock-header">
+          <div class="mock-dot" style="background:#ff5f5f"></div>
+          <div class="mock-dot" style="background:#ffbd2e"></div>
+          <div class="mock-dot" style="background:#28ca41"></div>
+          <span class="mock-title">SCRAPCHAIN — LIVE RATE DASHBOARD</span>
+          <span class="badge-live">Live</span>
+        </div>
+        <div class="rate-grid">
+          <div class="rate-card">
+            <div class="rate-material">Iron Scrap</div>
+            <div class="rate-price">₹28/kg</div>
+            <div class="rate-change up">▲ +₹1.5 today</div>
+          </div>
+          <div class="rate-card">
+            <div class="rate-material">Copper Wire</div>
+            <div class="rate-price">₹420/kg</div>
+            <div class="rate-change up">▲ +₹12 today</div>
+          </div>
+          <div class="rate-card">
+            <div class="rate-material">PET Plastic</div>
+            <div class="rate-price">₹12/kg</div>
+            <div class="rate-change dn">▼ -₹0.5 today</div>
+          </div>
+          <div class="rate-card">
+            <div class="rate-material">E-Waste (PCB)</div>
+            <div class="rate-price">₹650/kg</div>
+            <div class="rate-change up">▲ +₹40 today</div>
+          </div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label">Metal</div>
+            <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+            <div class="bar-val">82%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">E-Waste</div>
+            <div class="bar-track"><div class="bar-fill" style="width:61%"></div></div>
+            <div class="bar-val">61%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Plastic</div>
+            <div class="bar-track"><div class="bar-fill" style="width:44%"></div></div>
+            <div class="bar-val">44%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Paper</div>
+            <div class="bar-track"><div class="bar-fill" style="width:35%"></div></div>
+            <div class="bar-val">35%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item active fade-in">
+        <div class="fi-icon">🤖</div>
+        <div>
+          <h4>AI Visual Estimator</h4>
+          <p>Upload a photo of your junk. Computer vision identifies 50+ material categories and provides an instant price estimate before your pickup is even scheduled.</p>
+        </div>
+      </div>
+      <div class="feature-item fade-in">
+        <div class="fi-icon">📱</div>
+        <div>
+          <h4>Digital Receipt & UPI Wallet</h4>
+          <p>Bluetooth scale auto-syncs weight. Immutable digital receipt is generated. UPI payment is triggered instantly — transparent, tamper-proof, cashless.</p>
+        </div>
+      </div>
+      <div class="feature-item fade-in">
+        <div class="fi-icon">🏆</div>
+        <div>
+          <h4>Green Impact Certificate</h4>
+          <p>Every user earns a live "Green Certificate" tracking trees saved, CO₂ diverted, and water conserved — shareable, verifiable, and addictive.</p>
+        </div>
+      </div>
+      <div class="feature-item fade-in">
+        <div class="fi-icon">🔗</div>
+        <div>
+          <h4>EPR Portal Integration</h4>
+          <p>Auto-generate Extended Producer Responsibility certificates and sync directly to the CPCB portal. Manufacturers get compliance, you get revenue.</p>
+        </div>
+      </div>
+      <div class="feature-item fade-in">
+        <div class="fi-icon">🗺️</div>
+        <div>
+          <h4>Live City Waste Map</h4>
+          <p>Real-time visualization of scrap flows across every ward. Offered to municipal corporations as a "digital layer" in exchange for official city partnership status.</p>
+        </div>
+      </div>
+      <div class="feature-item fade-in">
+        <div class="fi-icon">📊</div>
+        <div>
+          <h4>SaaS for Kabadi-walas</h4>
+          <p>Business Pro tools: inventory management, logistics routing, digital scales, and e-Shram registration. Professionalizes the informal sector from within.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="section-label">Stakeholders</div>
+  <h2>Built for Every<br>Link in the Chain</h2>
+  <div class="eco-grid">
+    <div class="eco-card fade-in">
+      <div class="eco-label">For Households</div>
+      <h3>Citizens</h3>
+      <p>Schedule pickups in 2 taps, get fair prices for your scrap, earn Green Certificates, and track your environmental impact in real time.</p>
+      <div class="eco-perks">
+        <div class="eco-perk">AI photo-based price estimation</div>
+        <div class="eco-perk">Instant UPI payment on pickup</div>
+        <div class="eco-perk">Green impact dashboard</div>
+        <div class="eco-perk">Referral rewards & gamification</div>
+      </div>
+    </div>
+    <div class="eco-card fade-in">
+      <div class="eco-label">For Scrap Dealers</div>
+      <h3>Kabadi-walas</h3>
+      <p>Go digital with inventory management, route optimization, digital weighing tools, formal insurance via e-Shram, and direct access to industrial buyers.</p>
+      <div class="eco-perks">
+        <div class="eco-perk">Digital scale & weight sync</div>
+        <div class="eco-perk">Route & logistics optimization</div>
+        <div class="eco-perk">e-Shram & Udyam registration</div>
+        <div class="eco-perk">Access to industrial volume buyers</div>
+      </div>
+    </div>
+    <div class="eco-card fade-in">
+      <div class="eco-label">For Industry & Government</div>
+      <h3>Recyclers & Govt.</h3>
+      <p>Source certified, sorted, high-volume scrap at competitive rates. Auto-generate EPR credits. Get full traceability from household to furnace.</p>
+      <div class="eco-perks">
+        <div class="eco-perk">Verified EPR credit trading</div>
+        <div class="eco-perk">CPCB portal auto-sync</div>
+        <div class="eco-perk">Smart City waste analytics</div>
+        <div class="eco-perk">GST-ready digital transaction trail</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT NUMBERS -->
+<section class="impact-section">
+  <div class="section-label">Impact Metrics</div>
+  <h2>The Numbers<br>Don't Lie</h2>
+  <div class="impact-nums">
+    <div class="impact-num fade-in">
+      <span class="impact-big">70%</span>
+      <div class="impact-sub">Dry waste diverted from landfills</div>
+    </div>
+    <div class="impact-num fade-in">
+      <span class="impact-big">₹15%</span>
+      <div class="impact-sub">Margin on aggregated scrap sold</div>
+    </div>
+    <div class="impact-num fade-in">
+      <span class="impact-big">60M+</span>
+      <div class="impact-sub">Informal workers to be formalized</div>
+    </div>
+    <div class="impact-num fade-in">
+      <span class="impact-big">₹Bn</span>
+      <div class="impact-sub">New GST base from digital trail</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-label">Go-To-Market</div>
+  <h2>The Hub & Spoke<br>Playbook</h2>
+  <div class="roadmap">
+    <div class="road-item fade-in">
+      <div>
+        <div class="road-phase">Phase 01</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:'Space Mono',monospace;">Q1–Q2 2025</div>
+      </div>
+      <div>
+        <div class="road-title">The Pilot Ward</div>
+        <p class="road-desc">Master one high-density urban ward. Onboard 50 kabadi-walas and 5,000 households. Prove price transparency, digital weighing, and UPI payment work at ground level.</p>
+        <div class="road-tags">
+          <span class="road-tag">50 Kabadi-walas</span>
+          <span class="road-tag">5K Households</span>
+          <span class="road-tag">UPI Integration</span>
+        </div>
+      </div>
+    </div>
+    <div class="road-item fade-in">
+      <div>
+        <div class="road-phase">Phase 02</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:'Space Mono',monospace;">Q3–Q4 2025</div>
+      </div>
+      <div>
+        <div class="road-title">The Micro-Hub</div>
+        <p class="road-desc">Establish a Micro-Sorting Centre where kabadi-walas deliver daily collections. Deploy semi-automated baling machines. Begin selling certified, sorted tons directly to industrial buyers.</p>
+        <div class="road-tags">
+          <span class="road-tag">Sorting Centre</span>
+          <span class="road-tag">Industrial Sales</span>
+          <span class="road-tag">EPR Credits</span>
+        </div>
+      </div>
+    </div>
+    <div class="road-item fade-in">
+      <div>
+        <div class="road-phase">Phase 03</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:'Space Mono',monospace;">2026</div>
+      </div>
+      <div>
+        <div class="road-title">The Franchise Model</div>
+        <p class="road-desc">License the ScrapChain brand and SaaS platform to existing large-scale scrap dealers in Tier-1 and Tier-2 cities. Zero capex expansion. Revenue via SaaS subscriptions and transaction margins.</p>
+        <div class="road-tags">
+          <span class="road-tag">SaaS Licensing</span>
+          <span class="road-tag">Tier-2 Cities</span>
+          <span class="road-tag">City Partnerships</span>
+        </div>
+      </div>
+    </div>
+    <div class="road-item fade-in">
+      <div>
+        <div class="road-phase">Phase 04</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;font-family:'Space Mono',monospace;">2027+</div>
+      </div>
+      <div>
+        <div class="road-title">The Circular Marketplace</div>
+        <p class="road-desc">Launch an e-commerce section for upcycled products — furniture from wood waste, plastic road bricks, art from e-waste. Close the loop from discarded to desired.</p>
+        <div class="road-tags">
+          <span class="road-tag">Upcycled Products</span>
+          <span class="road-tag">Data Insights</span>
+          <span class="road-tag">FMCG Partnerships</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Scrap<span>Chain</span></div>
+      <p>Bridging India's informal scrap economy with digital infrastructure, one ward at a time. The Amazon of Waste is being built today.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <ul>
+        <li><a href="#">Citizen App</a></li>
+        <li><a href="#">Kabadi-wala Pro</a></li>
+        <li><a href="#">Recycler Portal</a></li>
+        <li><a href="#">City Dashboard</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Investors</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Compliance</h5>
+      <ul>
+        <li><a href="#">EPR Dashboard</a></li>
+        <li><a href="#">CPCB Reports</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 ScrapChain Technologies Pvt. Ltd. — All rights reserved.</span>
+    <span>Built in India 🇮🇳 — Closing the loop since 2024</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

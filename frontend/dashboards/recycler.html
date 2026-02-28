@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recycler Dashboard — ScrapChain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.dash { padding: 120px 48px 80px; max-width: 900px; margin: 0 auto; }
+.dash h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; margin-bottom: 8px; }
+.dash .sub { color: var(--muted); margin-bottom: 40px; }
+.dash-card { background: var(--mid); border: 1px solid rgba(200,241,53,0.15); padding: 32px; margin-bottom: 24px; }
+.dash-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin-bottom: 20px; }
+.dash .pickup-item, .dash .cert-item { padding: 16px; border-bottom: 1px solid rgba(200,241,53,0.1); }
+.dash .btn { background: var(--lime); color: var(--dark); padding: 10px 20px; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; font-family: inherit; margin-top: 8px; }
+.dash .btn:hover { background: var(--rust); color: #fff; }
+.dash .btn-ghost { background: transparent; border: 1px solid var(--lime); color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="dash">
+  <nav style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,0.1);display:flex;justify-content:space-between;align-items:center;z-index:100;">
+    <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+    <span id="userName" style="color:var(--muted);"></span>
+    <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+  </nav>
+
+  <h1>Recycler Dashboard</h1>
+  <p class="sub">View completed pickups and generate EPR certificates.</p>
+
+  <div class="dash-card">
+    <h2>Completed Pickups</h2>
+    <div id="pickupList"></div>
+  </div>
+
+  <div class="dash-card">
+    <h2>EPR Certificates</h2>
+    <div id="certList"></div>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/toast.js"></script>
+<script>
+  if (!auth.isLoggedIn() || (auth.getRole() !== 'recycler' && auth.getRole() !== 'admin')) {
+    window.location.href = '../auth/login.html';
+  }
+  const user = JSON.parse(localStorage.getItem('scrapchain_user') || '{}');
+  document.getElementById('userName').textContent = user.name || user.email || '';
+  document.getElementById('logoutBtn').onclick = () => auth.logout();
+
+  async function loadPickups() {
+    document.getElementById('pickupList').innerHTML = '<p style="color:var(--muted);">Loading…</p>';
+    const list = await api.get('/api/pickups');
+    document.getElementById('pickupList').innerHTML = list.length === 0
+      ? '<p style="color:var(--muted);">No completed pickups.</p>'
+      : list.map(p => `
+          <div class="pickup-item">
+            <p><strong>${p.address || 'No address'}</strong> · ${p.weightKg || 0} kg · ₹${p.amount || 0}</p>
+            <button class="btn" onclick="generateEPR('${p.id}')">Generate EPR Certificate</button>
+          </div>
+        `).join('');
+  }
+
+  async function generateEPR(pickupId) {
+    try {
+      await api.post('/api/epr', { pickupId });
+      loadCerts();
+      loadPickups();
+      if (window.toast) toast.success('EPR certificate generated!');
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
+  async function loadCerts() {
+    document.getElementById('certList').innerHTML = '<p style="color:var(--muted);">Loading…</p>';
+    const list = await api.get('/api/epr');
+    document.getElementById('certList').innerHTML = list.length === 0
+      ? '<p style="color:var(--muted);">No EPR certificates yet.</p>'
+      : list.map(c => `
+          <div class="cert-item">
+            <p>Pickup ${c.pickupId} · ${c.weightKg || 0} kg · Issued ${new Date(c.createdAt || c.issuedAt).toLocaleDateString()}</p>
+          </div>
+        `).join('');
+  }
+
+  loadPickups();
+  loadCerts();
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Dashboard — ScrapChain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.dash { padding: 120px 48px 80px; max-width: 900px; margin: 0 auto; }
+.dash h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; margin-bottom: 8px; }
+.dash .sub { color: var(--muted); margin-bottom: 40px; }
+.dash-card { background: var(--mid); border: 1px solid rgba(200,241,53,0.15); padding: 32px; margin-bottom: 24px; }
+.dash-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin-bottom: 20px; }
+.dash label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+.dash input, .dash textarea, .dash select { width: 100%; background: var(--soil); border: 1px solid rgba(200,241,53,0.2); color: var(--sand); padding: 14px 18px; font-family: inherit; font-size: 15px; margin-bottom: 20px; }
+.dash textarea { min-height: 80px; resize: vertical; }
+.dash .btn { background: var(--lime); color: var(--dark); padding: 14px 24px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; font-family: inherit; }
+.dash .btn:hover { background: var(--rust); color: #fff; }
+.dash .btn-ghost { background: transparent; border: 1px solid var(--lime); color: var(--lime); }
+.dash .btn-ghost:hover { background: rgba(200,241,53,0.1); }
+.dash .error { color: var(--rust); font-size: 13px; margin-bottom: 16px; }
+.dash .estimate-result { background: var(--soil); padding: 20px; margin-top: 16px; }
+.dash .pickup-list { list-style: none; }
+.dash .pickup-item { padding: 16px; border-bottom: 1px solid rgba(200,241,53,0.1); display: flex; justify-content: space-between; align-items: center; }
+.dash .pickup-item:last-child { border-bottom: none; }
+.dash .nav-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+</style>
+</head>
+<body>
+<div class="dash">
+  <nav style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,0.1);display:flex;justify-content:space-between;align-items:center;z-index:100;">
+    <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+    <span id="userName" style="color:var(--muted);"></span>
+    <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+  </nav>
+
+  <h1>Schedule Pickup</h1>
+  <p class="sub">Upload a photo or select materials, get an estimate, and schedule your pickup.</p>
+
+  <div class="dash-card">
+    <h2>New Pickup</h2>
+    <div id="pickupError" class="error" style="display:none;"></div>
+    <form id="pickupForm">
+      <label for="address">Address</label>
+      <textarea id="address" name="address" required placeholder="Your full address"></textarea>
+      <label>Materials & Weight (kg)</label>
+      <div id="materialRows"></div>
+      <button type="button" class="btn btn-ghost" id="addMaterial">+ Add material</button>
+      <div id="estimateResult" class="estimate-result" style="display:none;"></div>
+      <button type="button" class="btn btn-ghost" id="getEstimate" style="margin-top:16px;">Get Estimate</button>
+      <div style="margin-top:24px;">
+        <label>Photo (optional)</label>
+        <input type="file" id="photo" accept="image/*">
+      </div>
+      <button type="submit" class="btn" style="margin-top:24px;">Schedule Pickup</button>
+    </form>
+  </div>
+
+  <div class="dash-card">
+    <h2>Your Pickups</h2>
+    <ul class="pickup-list" id="pickupList"></ul>
+  </div>
+  <div class="dash-card">
+    <h2>Your Payments</h2>
+    <ul class="pickup-list" id="txnList"></ul>
+  </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/toast.js"></script>
+<script>
+  if (!auth.isLoggedIn() || auth.getRole() !== 'citizen') {
+    window.location.href = '../auth/login.html';
+  }
+  const user = JSON.parse(localStorage.getItem('scrapchain_user') || '{}');
+  document.getElementById('userName').textContent = user.name || user.email || '';
+  document.getElementById('logoutBtn').onclick = () => auth.logout();
+
+  let materials = [];
+  let materialRows = [];
+
+  async function loadMaterials() {
+    materials = await api.get('/api/materials');
+    renderMaterialRows();
+  }
+
+  function renderMaterialRows() {
+    const container = document.getElementById('materialRows');
+    const html = materialRows.map((r, i) => `
+      <div style="display:flex;gap:12px;margin-bottom:12px;align-items:center;">
+        <select data-idx="${i}" class="mat-select" style="flex:2;">
+          <option value="">Select material</option>
+          ${materials.map(m => `<option value="${m.id}" ${r.materialId === m.id ? 'selected' : ''}>${m.name} — ₹${m.pricePerKg || 0}/kg</option>`).join('')}
+        </select>
+        <input type="number" data-idx="${i}" class="mat-weight" placeholder="kg" min="0" step="0.1" value="${r.weightKg || ''}" style="width:80px;">
+        <button type="button" class="btn btn-ghost" data-idx="${i}" onclick="removeRow(${i})">Remove</button>
+      </div>
+    `).join('');
+    container.innerHTML = html;
+  }
+
+  window.removeRow = function (i) {
+    materialRows.splice(i, 1);
+    renderMaterialRows();
+  };
+
+  document.getElementById('addMaterial').onclick = () => {
+    materialRows.push({ materialId: '', weightKg: 0 });
+    renderMaterialRows();
+  };
+
+  document.getElementById('getEstimate').onclick = async () => {
+    const selections = [];
+    document.querySelectorAll('.mat-select').forEach((sel, i) => {
+      const mid = sel.value;
+      const w = parseFloat(document.querySelector(`.mat-weight[data-idx="${i}"]`)?.value) || 0;
+      if (mid && w > 0) selections.push({ materialId: mid, weightKg: w });
+    });
+    if (selections.length === 0) {
+      alert('Add at least one material with weight');
+      return;
+    }
+    try {
+      const res = await api.post('/api/materials/estimate', { materials: selections });
+      document.getElementById('estimateResult').style.display = 'block';
+      document.getElementById('estimateResult').innerHTML = `<strong>Estimated value: ₹${res.estimate.toFixed(0)}</strong>`;
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  document.getElementById('pickupForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('pickupError');
+    errEl.style.display = 'none';
+    const selections = [];
+    document.querySelectorAll('.mat-select').forEach((sel, i) => {
+      const mid = sel.value;
+      const w = parseFloat(document.querySelector(`.mat-weight[data-idx="${i}"]`)?.value) || 0;
+      if (mid && w > 0) selections.push({ materialId: mid, weightKg: w });
+    });
+    let photoUrl = null;
+    const photoInput = document.getElementById('photo');
+    if (photoInput.files && photoInput.files[0]) {
+      try {
+        const fd = new FormData();
+        fd.append('file', photoInput.files[0]);
+        const up = await api.upload('/api/upload', fd);
+        photoUrl = up.photoUrl;
+      } catch (err) {
+        errEl.textContent = 'Photo upload failed: ' + err.message;
+        errEl.style.display = 'block';
+        return;
+      }
+    }
+    try {
+      await api.post('/api/pickups', {
+        address: document.getElementById('address').value,
+        materials: selections,
+        photoUrl,
+      });
+      document.getElementById('address').value = '';
+      materialRows = [];
+      renderMaterialRows();
+      loadPickups();
+      if (window.toast) toast.success('Pickup scheduled!');
+    } catch (err) {
+      errEl.textContent = err.message;
+      errEl.style.display = 'block';
+    }
+  };
+
+  async function loadPickups() {
+    const ul = document.getElementById('pickupList');
+    ul.innerHTML = '<li style="color:var(--muted);">Loading…</li>';
+    const list = await api.get('/api/pickups');
+    const ul = document.getElementById('pickupList');
+    ul.innerHTML = list.length === 0
+      ? '<li style="color:var(--muted);">No pickups yet.</li>'
+      : list.map(p => `
+          <li class="pickup-item">
+            <div>
+              <strong>${p.address || 'No address'}</strong><br>
+              <span style="font-size:12px;color:var(--muted);">${p.status || 'pending'} · ${new Date(p.createdAt).toLocaleDateString()}</span>
+            </div>
+            <span>${p.amount ? '₹' + p.amount : '-'}</span>
+          </li>
+        `).join('');
+  }
+
+  async function loadTransactions() {
+    try {
+      const list = await api.get('/api/transactions');
+      const ul = document.getElementById('txnList');
+      ul.innerHTML = list.length === 0
+        ? '<li style="color:var(--muted);">No payments yet.</li>'
+        : list.map(t => `
+            <li class="pickup-item">
+              <div>
+                <strong>₹${t.amount}</strong>
+                <span style="font-size:12px;color:var(--muted);"> · ${new Date(t.createdAt).toLocaleDateString()}</span>
+              </div>
+            </li>
+          `).join('');
+    } catch (e) {
+      document.getElementById('txnList').innerHTML = '<li style="color:var(--muted);">Unable to load.</li>';
+    }
+  }
+  loadMaterials().then(() => { materialRows.push({}); renderMaterialRows(); });
+  loadPickups();
+  loadTransactions();
+</script>
+</body>
+</html>

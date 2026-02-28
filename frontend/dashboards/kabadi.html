@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabadi-wala Dashboard - ScrapChain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.dash{padding:120px 48px 80px;max-width:900px;margin:0 auto}.dash h1{font-family:'Bebas Neue',sans-serif;font-size:48px;margin-bottom:8px}.dash .sub{color:var(--muted);margin-bottom:40px}.dash-card{background:var(--mid);border:1px solid rgba(200,241,53,.15);padding:32px;margin-bottom:24px}.dash-card h2{font-family:'Bebas Neue',sans-serif;font-size:24px;margin-bottom:20px}.dash .pickup-item{padding:20px;border:1px solid rgba(200,241,53,.1);margin-bottom:12px}.dash .btn{background:var(--lime);color:var(--dark);padding:10px 20px;font-weight:700;font-size:12px;text-transform:uppercase;border:none;cursor:pointer;font-family:inherit}.dash .btn:hover{background:var(--rust);color:#fff}.dash .btn-ghost{background:transparent;border:1px solid var(--lime);color:var(--lime)}.dash input{width:100px;background:var(--soil);border:1px solid rgba(200,241,53,.2);color:var(--sand);padding:10px;margin-right:12px}
+</style>
+</head>
+<body>
+<div class="dash">
+  <nav style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,.1);display:flex;justify-content:space-between;align-items:center;z-index:100">
+    <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+    <span id="userName" style="color:var(--muted)"></span>
+    <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+  </nav>
+  <h1>Kabadi-wala Dashboard</h1>
+  <p class="sub">View assigned pickups, add weight, and mark as paid.</p>
+  <div class="dash-card">
+    <h2>Available to Claim</h2>
+    <div id="availableList"></div>
+  </div>
+  <div class="dash-card">
+    <h2>My Assigned Pickups</h2>
+    <div id="pickupList"></div>
+  </div>
+  <div class="dash-card">
+    <h2>Recent Transactions</h2>
+    <div id="txnList"></div>
+  </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/toast.js"></script>
+<script>
+if(!auth.isLoggedIn()||auth.getRole()!=='kabadi')window.location.href='../auth/login.html';
+document.getElementById('userName').textContent=JSON.parse(localStorage.getItem('scrapchain_user')||'{}').name||'';
+document.getElementById('logoutBtn').onclick=function(){auth.logout()};
+async function loadAvailable(){document.getElementById('availableList').innerHTML='<p style="color:var(--muted)">Loading…</p>';try{var list=await api.get('/api/pickups/available');var c=document.getElementById('availableList');c.innerHTML=list.length===0?'<p style="color:var(--muted)">No pickups available to claim.</p>':list.map(function(p){return'<div class="pickup-item"><h3>'+p.address+'</h3><p>Created '+new Date(p.createdAt).toLocaleDateString()+'</p><button class="btn" onclick="claimPickup(\''+p.id+'\')">Claim</button></div>'}).join('')}catch(e){document.getElementById('availableList').innerHTML='<p style="color:var(--rust)">'+e.message+'</p>'}}
+async function loadPickups(){document.getElementById('pickupList').innerHTML='<p style="color:var(--muted)">Loading…</p>';try{var list=await api.get('/api/pickups');var c=document.getElementById('pickupList');c.innerHTML=list.length===0?'<p style="color:var(--muted)">No assigned pickups.</p>':list.map(function(p){return'<div class="pickup-item"><h3>'+p.address+'</h3><p>Status: '+p.status+'</p>'+('scheduled'===p.status||'collected'===p.status||'pending'===p.status?'<div><input type="number" placeholder="Weight (kg)" id="w-'+p.id+'"><input type="number" placeholder="Amount (Rs)" id="a-'+p.id+'"><button class="btn" onclick="updatePickup(\''+p.id+'\')">Update & Mark Completed</button></div>':'<p>Amount: Rs'+p.amount+'</p>')+'</div>'}).join('')}catch(e){document.getElementById('pickupList').innerHTML='<p style="color:var(--rust)">'+e.message+'</p>'}}
+async function claimPickup(id){try{await api.patch('/api/pickups/'+id,{kabadiId:auth.getUserId(),status:'scheduled'});loadAvailable();loadPickups();if(window.toast)toast.success('Pickup claimed!')}catch(e){alert(e.message)}};
+async function updatePickup(id){var w=parseFloat(document.getElementById('w-'+id).value)||0,a=parseFloat(document.getElementById('a-'+id).value)||0;if(!w||!a){alert('Enter weight and amount');return}try{await api.patch('/api/pickups/'+id,{weightKg:w,amount:a,status:'completed'});await api.post('/api/transactions',{pickupId:id,amount:a});loadPickups();loadAvailable();loadTransactions();if(window.toast)toast.success('Pickup completed! Payment recorded.')}catch(e){alert(e.message||'Update failed')}}
+async function loadTransactions(){try{var list=await api.get('/api/transactions');var c=document.getElementById('txnList');c.innerHTML=list.length===0?'<p style="color:var(--muted)">No transactions yet.</p>':list.map(function(t){return'<div class="pickup-item"><p>Pickup '+t.pickupId+' · ₹'+t.amount+'</p><span style="font-size:12px;color:var(--muted)">'+new Date(t.createdAt).toLocaleDateString()+'</span></div>'}).join('')}catch(e){document.getElementById('txnList').innerHTML='<p style="color:var(--muted)">Transactions unavailable.</p>'}}
+loadAvailable();loadPickups();loadTransactions();
+</script>
+</body>
+</html>

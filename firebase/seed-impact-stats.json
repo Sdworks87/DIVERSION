@@ -1,0 +1,13 @@
+[
+  { "key": "market2026", "value": "₹2.02B" },
+  { "key": "informalPct", "value": "90%" },
+  { "key": "categoriesTracked", "value": "50+" },
+  { "key": "dryWasteDiverted", "value": "70%" },
+  { "key": "marginOnScrap", "value": "₹15%" },
+  { "key": "workersToFormalize", "value": "60M+" },
+  { "key": "newGstBase", "value": "₹Bn" },
+  { "key": "bar_metal", "value": 82 },
+  { "key": "bar_ewaste", "value": 61 },
+  { "key": "bar_plastic", "value": 44 },
+  { "key": "bar_paper", "value": 35 }
+]

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — ScrapChain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+body { cursor: default !important; }
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 24px 80px; }
+.auth-box { width: 100%; max-width: 420px; background: var(--mid); border: 1px solid rgba(200,241,53,0.15); padding: 48px; }
+.auth-box h1 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin-bottom: 8px; }
+.auth-box p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+.auth-box label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+.auth-box input { width: 100%; background: var(--soil); border: 1px solid rgba(200,241,53,0.2); color: var(--sand); padding: 14px 18px; font-family: inherit; font-size: 15px; margin-bottom: 16px; }
+.auth-box input:focus { outline: none; border-color: var(--lime); }
+.auth-box button { width: 100%; background: var(--lime); color: var(--dark); padding: 16px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; font-family: inherit; }
+.auth-box button:hover { background: var(--rust); color: #fff; }
+.auth-box .error { color: var(--rust); font-size: 13px; margin-bottom: 16px; }
+.auth-box a { color: var(--lime); text-decoration: none; font-size: 14px; }
+.auth-box a:hover { text-decoration: underline; }
+.auth-links { margin-top: 24px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-box">
+    <a href="../index.html" class="logo" style="display:inline-block;margin-bottom:24px;">Scrap<span>Chain</span></a>
+    <h1>Welcome Back</h1>
+    <p>Sign in to access your ScrapChain dashboard.</p>
+    <div id="error" class="error" style="display:none;"></div>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required minlength="6" autocomplete="current-password">
+      <button type="submit">Sign In</button>
+    </form>
+    <div class="auth-links">
+      <a href="register.html">Need an account? Register</a>
+    </div>
+  </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  if (auth.isLoggedIn()) auth.redirectByRole();
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errEl = document.getElementById('error');
+    errEl.style.display = 'none';
+    try {
+      const data = await api.post('/api/auth/login', {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+      });
+      localStorage.setItem('scrapchain_token', data.token);
+      localStorage.setItem('scrapchain_user', JSON.stringify(data.user));
+      auth.redirectByRole();
+    } catch (err) {
+      errEl.textContent = err.message || 'Login failed';
+      errEl.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
+

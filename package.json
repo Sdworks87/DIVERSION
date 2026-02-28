@@ -1,0 +1,10 @@
+{
+  "name": "scrapchain",
+  "version": "1.0.0",
+  "description": "ScrapChain — India's Waste Intelligence Network",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm start",
+    "seed": "cd backend && npm run seed"
+  }
+}
