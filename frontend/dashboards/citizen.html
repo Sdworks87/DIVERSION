@@ -129,6 +129,217 @@
       align-items: center;
       margin-bottom: 32px;
     }
+
+    /* New Cart UI Styles */
+    .material-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .mat-card {
+      background: var(--soil);
+      border: 1px solid rgba(200, 241, 53, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .mat-card:hover {
+      border-color: var(--lime);
+      background: rgba(200, 241, 53, 0.05);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(200, 241, 53, 0.1);
+    }
+
+    .mat-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+      display: inline-block;
+      filter: drop-shadow(0 4px 12px rgba(200, 241, 53, 0.2));
+    }
+
+    .mat-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sand);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mat-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--lime);
+    }
+
+    .cart-section {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px dashed rgba(200, 241, 53, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cart-header h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cart-item-icon {
+      font-size: 24px;
+      background: rgba(200, 241, 53, 0.1);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid rgba(200, 241, 53, 0.2);
+    }
+
+    .cart-item-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--sand);
+    }
+
+    .cart-item-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--dark);
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cart-btn {
+      background: transparent;
+      border: none;
+      color: var(--sand);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .cart-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--lime);
+    }
+
+    .cart-btn.remove:hover {
+      color: var(--rust);
+    }
+
+    .cart-qty {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      width: 40px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--lime);
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Hide arrows in input[type=number] */
+    .cart-qty::-webkit-outer-spin-button,
+    .cart-qty::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .cart-qty[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .cart-qty:focus {
+      outline: none;
+      border-bottom: 1px solid var(--lime);
+    }
+
+    .cart-total {
+      margin-top: 20px;
+      background: var(--lime);
+      color: var(--dark);
+      padding: 16px 20px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .cart-total-label {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cart-total-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 24px;
+    }
+
+    .empty-cart {
+      color: var(--muted);
+      text-align: center;
+      padding: 24px 0;
+      font-size: 13px;
+      font-family: 'Space Mono', monospace;
+    }
   </style>
 </head>
 
@@ -150,11 +361,24 @@
       <form id="pickupForm">
         <label for="address">Address</label>
         <textarea id="address" name="address" required placeholder="Your full address"></textarea>
-        <label>Materials & Weight (kg)</label>
-        <div id="materialRows"></div>
-        <button type="button" class="btn btn-ghost" id="addMaterial">+ Add material</button>
-        <div id="estimateResult" class="estimate-result" style="display:none;"></div>
-        <button type="button" class="btn btn-ghost" id="getEstimate" style="margin-top:16px;">Get Estimate</button>
+        <label style="margin-bottom: 16px;">1. Select Waste Materials</label>
+        <div id="materialGrid" class="material-grid">
+          <div style="color:var(--muted); font-size:13px;">Loading materials...</div>
+        </div>
+
+        <label style="margin-top: 32px; margin-bottom: 16px;">2. Your Cart</label>
+        <div class="cart-section">
+          <div class="cart-header">
+            <h3>Items to Pickup</h3>
+          </div>
+          <div id="cartItems">
+            <div class="empty-cart">No items in your cart. Click materials above to add.</div>
+          </div>
+          <div class="cart-total" id="cartTotalBar" style="display:none;">
+            <div class="cart-total-label">Live Est. Total</div>
+            <div class="cart-total-value" id="cartTotalValue">₹0</div>
+          </div>
+        </div>
         <div style="margin-top:24px;">
           <label>Photo (optional)</label>
           <input type="file" id="photo" accept="image/*">
@@ -185,72 +409,142 @@
     document.getElementById('logoutBtn').onclick = () => auth.logout();
 
     let materials = [];
-    let materialRows = [];
+    let cart = {};
+
+    const iconMap = {
+      'Iron': '⛓️',
+      'Copper': '⚡',
+      'Plastic': '🛍️',
+      'PET': '🥤',
+      'E-Waste': '💻',
+      'Paper': '📰',
+      'Cardboard': '📦',
+      'Glass': '🍾',
+      'Aluminium': '🥫',
+      'Brass': '🎷',
+      'Battery': '🔋',
+      'Vehicle': '🚗'
+    };
+
+    function getIcon(name) {
+      for (const [key, icon] of Object.entries(iconMap)) {
+        if (name.includes(key)) return icon;
+      }
+      return '♻️';
+    }
 
     async function loadMaterials() {
       try {
         materials = await api.get('/api/materials');
-        renderMaterialRows();
+        renderMaterialGrid();
       } catch (e) {
         console.error("Failed to load materials", e);
+        document.getElementById('materialGrid').innerHTML = '<div style="color:var(--rust);">Failed to load materials.</div>';
       }
     }
 
-    function renderMaterialRows() {
-      const container = document.getElementById('materialRows');
-      const html = materialRows.map((r, i) => `
-      <div style="display:flex;gap:12px;margin-bottom:12px;align-items:center;">
-        <select data-idx="${i}" class="mat-select" style="flex:2;">
-          <option value="">Select material</option>
-          ${materials.map(m => `<option value="${m.id}" ${r.materialId === m.id ? 'selected' : ''}>${m.name} — ₹${m.pricePerKg || 0}/kg</option>`).join('')}
-        </select>
-        <input type="number" data-idx="${i}" class="mat-weight" placeholder="kg" min="0" step="0.1" value="${r.weightKg || ''}" style="width:80px;">
-        <button type="button" class="btn btn-ghost" data-idx="${i}" onclick="removeRow(${i})">Remove</button>
-      </div>
-    `).join('');
-      container.innerHTML = html;
+    function renderMaterialGrid() {
+      const grid = document.getElementById('materialGrid');
+      grid.innerHTML = materials.map(m => `
+        <div class="mat-card" onclick="addToCart('${m.id}')">
+          <div class="mat-icon">${getIcon(m.name)}</div>
+          <div class="mat-name" title="${m.name}">${m.name}</div>
+          <div class="mat-price">₹${m.pricePerKg || 0}/kg</div>
+        </div>
+      `).join('');
     }
 
-    window.removeRow = function (i) {
-      materialRows.splice(i, 1);
-      renderMaterialRows();
+    window.addToCart = function (id) {
+      if (!cart[id]) {
+        cart[id] = 1; // Default to 1 kg when newly added
+      } else {
+        cart[id] += 1;
+      }
+      renderCart();
+      updateTotal();
     };
 
-    document.getElementById('addMaterial').onclick = () => {
-      materialRows.push({ materialId: '', weightKg: 0 });
-      renderMaterialRows();
+    window.updateCartQty = function (id, delta) {
+      if (!cart[id]) return;
+      cart[id] += delta;
+      cart[id] = Math.max(0, parseFloat(cart[id].toFixed(1)));
+      if (cart[id] <= 0) {
+        delete cart[id];
+      }
+      renderCart();
+      updateTotal();
     };
 
-    document.getElementById('getEstimate').onclick = async () => {
-      const selections = [];
-      document.querySelectorAll('.mat-select').forEach((sel, i) => {
-        const mid = sel.value;
-        const w = parseFloat(document.querySelector(`.mat-weight[data-idx="${i}"]`)?.value) || 0;
-        if (mid && w > 0) selections.push({ materialId: mid, weightKg: w });
-      });
-      if (selections.length === 0) {
-        alert('Add at least one material with weight');
+    window.setCartQty = function (id, val) {
+      const num = parseFloat(val);
+      if (isNaN(num) || num <= 0) {
+        delete cart[id];
+      } else {
+        cart[id] = num;
+      }
+      renderCart();
+      updateTotal();
+    };
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      const keys = Object.keys(cart);
+
+      if (keys.length === 0) {
+        container.innerHTML = '<div class="empty-cart">No items in your cart. Click materials above to add.</div>';
+        document.getElementById('cartTotalBar').style.display = 'none';
         return;
       }
-      try {
-        const res = await api.post('/api/materials/estimate', { materials: selections });
-        document.getElementById('estimateResult').style.display = 'block';
-        document.getElementById('estimateResult').innerHTML = `<strong>Estimated value: ₹${res.estimate.toFixed(0)}</strong>`;
-      } catch (e) {
-        alert(e.message);
-      }
-    };
+
+      document.getElementById('cartTotalBar').style.display = 'flex';
+
+      container.innerHTML = keys.map(id => {
+        const m = materials.find(x => x.id === id);
+        if (!m) return '';
+        return `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-icon">${getIcon(m.name)}</div>
+            <div>
+              <div class="cart-item-name">${m.name}</div>
+              <div class="cart-item-price">₹${m.pricePerKg}/kg</div>
+            </div>
+          </div>
+          <div class="cart-controls">
+            <button type="button" class="cart-btn remove" onclick="updateCartQty('${id}', -1)">-</button>
+            <input type="number" class="cart-qty" value="${cart[id]}" step="0.5" min="0" onchange="setCartQty('${id}', this.value)">
+            <button type="button" class="cart-btn" onclick="updateCartQty('${id}', 1)">+</button>
+          </div>
+        </div>
+        `;
+      }).join('');
+    }
+
+    function updateTotal() {
+      let total = 0;
+      Object.entries(cart).forEach(([id, w]) => {
+        const m = materials.find(x => x.id === id);
+        if (m && w > 0) {
+          total += (m.pricePerKg || 0) * w;
+        }
+      });
+      document.getElementById('cartTotalValue').innerText = '₹' + Math.round(total);
+    }
 
     document.getElementById('pickupForm').onsubmit = async (e) => {
       e.preventDefault();
       const errEl = document.getElementById('pickupError');
       errEl.style.display = 'none';
       const selections = [];
-      document.querySelectorAll('.mat-select').forEach((sel, i) => {
-        const mid = sel.value;
-        const w = parseFloat(document.querySelector(`.mat-weight[data-idx="${i}"]`)?.value) || 0;
+      Object.entries(cart).forEach(([mid, w]) => {
         if (mid && w > 0) selections.push({ materialId: mid, weightKg: w });
       });
+
+      if (selections.length === 0) {
+        errEl.textContent = 'Please add at least one item to your cart.';
+        errEl.style.display = 'block';
+        return;
+      }
       let photoUrl = null;
       const photoInput = document.getElementById('photo');
       if (photoInput.files && photoInput.files[0]) {
@@ -272,8 +566,9 @@
           photoUrl,
         });
         document.getElementById('address').value = '';
-        materialRows = [];
-        renderMaterialRows();
+        cart = {};
+        renderCart();
+        updateTotal();
 
         const submitBtn = document.querySelector('#pickupForm button[type="submit"]');
         const originalText = submitBtn.textContent;
@@ -331,7 +626,7 @@
         document.getElementById('txnList').innerHTML = '<li style="color:var(--muted);">Unable to load.</li>';
       }
     }
-    loadMaterials().then(() => { materialRows.push({}); renderMaterialRows(); });
+    loadMaterials();
     loadPickups();
     loadTransactions();
   </script>
