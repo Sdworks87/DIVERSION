@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vision Scanner — ScrapChain</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .scanner-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            padding: 20px 48px;
+            border-bottom: 1px solid rgba(200, 241, 53, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .sub {
+            color: var(--muted);
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .viewfinder {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 4/3;
+            background: #000;
+            border: 2px solid var(--mid);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s;
+        }
+
+        .viewfinder.active {
+            border-color: var(--lime);
+            box-shadow: 0 0 20px rgba(200, 241, 53, 0.2);
+        }
+
+        #video-feed,
+        #image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #image-preview {
+            display: none;
+            z-index: 2;
+        }
+
+        .scan-line {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--lime);
+            box-shadow: 0 0 15px 4px rgba(200, 241, 53, 0.6);
+            z-index: 10;
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: var(--lime);
+            color: var(--dark);
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: var(--rust);
+            color: #fff;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1.5px solid rgba(200, 241, 53, 0.3);
+            color: var(--lime);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--lime);
+        }
+
+        .result-panel {
+            margin-top: 32px;
+            width: 100%;
+            max-width: 600px;
+            background: var(--mid);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            padding: 24px;
+            border-radius: 8px;
+            display: none;
+            text-align: left;
+            animation: fadeUp 0.4s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .material-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--sand);
+            margin-bottom: 4px;
+        }
+
+        .material-price {
+            font-family: 'Space Mono', monospace;
+            font-size: 24px;
+            color: var(--lime);
+            font-weight: bold;
+        }
+
+        .confidence {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #6fcf6f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .corners {
+            position: absolute;
+            inset: 20px;
+            border: 2px solid rgba(200, 241, 53, 0.4);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .corners::before,
+        .corners::after {
+            content: '';
+            position: absolute;
+        }
+
+        #hidden-file-input {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="header-nav">
+        <div style="display:flex;gap:24px;align-items:center;">
+            <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;">
+            <button class="btn btn-ghost" style="padding: 10px 20px; font-size: 12px;"
+                onclick="window.close(); if(window.location.href!==document.referrer){window.location.href='kabadi-panel.html'}">Close
+                Scanner</button>
+        </div>
+    </nav>
+
+    <div class="scanner-container">
+        <h1>AI Vision Scanner <span
+                style="font-size:14px;color:var(--rust);background:rgba(255,95,95,0.1);padding:4px 8px;border-radius:4px;vertical-align:middle;margin-left:8px;font-family:'Space Mono';">LIVE
+                STATUS</span></h1>
+        <p class="sub">Point your camera or upload an image to instantly identify high-value scrap materials and check
+            current market rates.</p>
+
+        <div class="viewfinder" id="viewfinder">
+            <video id="video-feed" autoplay playsinline></video>
+            <img id="image-preview" src="" alt="Uploaded image preview">
+            <div class="corners"></div>
+            <div class="scan-line" id="scan-line"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-ghost" id="camera-btn">📸 Start Camera</button>
+            <input type="file" id="hidden-file-input" accept="image/*">
+            <button class="btn btn-ghost" id="upload-btn">📁 Upload Image</button>
+            <button class="btn" id="scan-btn" disabled>🔍 Analyze Subject</button>
+        </div>
+
+        <div class="result-panel" id="result-panel">
+            <div class="result-title">Analysis Complete</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+                <div>
+                    <div class="material-name" id="res-material">E-Waste PCB & Components</div>
+                    <div class="confidence" id="res-confidence">✓ 98.4% Confidence Match</div>
+                </div>
+                <div style="text-align:right;">
+                    <div
+                        style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">
+                        Est. Market Value</div>
+                    <div class="material-price" id="res-price">₹650/kg</div>
+                </div>
+            </div>
+            <button class="btn btn-ghost" style="width:100%; margin-top:24px;">Add to Inventory</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video-feed');
+        const imagePreview = document.getElementById('image-preview');
+        const cameraBtn = document.getElementById('camera-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const fileInput = document.getElementById('hidden-file-input');
+        const scanBtn = document.getElementById('scan-btn');
+        const scanLine = document.getElementById('scan-line');
+        const viewfinder = document.getElementById('viewfinder');
+        const resultPanel = document.getElementById('result-panel');
+
+        let stream = null;
+
+        // Camera Logic
+        cameraBtn.addEventListener('click', async () => {
+            try {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                video.style.display = 'block';
+                imagePreview.style.display = 'none';
+                scanBtn.disabled = false;
+                cameraBtn.innerHTML = '📸 Camera Active';
+                cameraBtn.style.color = 'var(--lime)';
+                cameraBtn.style.borderColor = 'var(--lime)';
+                resultPanel.style.display = 'none';
+                viewfinder.classList.add('active');
+            } catch (err) {
+                console.error(err);
+                alert('Camera access denied or unavailable. You can still upload an image.');
+            }
+        });
+
+        // Upload Logic
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                const url = URL.createObjectURL(file);
+                imagePreview.src = url;
+                imagePreview.style.display = 'block';
+                video.style.display = 'none';
+                scanBtn.disabled = false;
+                resultPanel.style.display = 'none';
+                viewfinder.classList.add('active');
+
+                // Reset camera button
+                cameraBtn.innerHTML = '📸 Start Camera';
+                cameraBtn.style.color = '';
+                cameraBtn.style.borderColor = '';
+            }
+        });
+
+        // Scan Simulation Logic
+        const mockResults = [
+            { name: "E-Waste (PCB Boards)", price: "₹650/kg", conf: "98.4%" },
+            { name: "Mixed Copper Scrap", price: "₹420/kg", conf: "95.2%" },
+            { name: "Iron Scrap (Heavy)", price: "₹28/kg", conf: "91.8%" },
+            { name: "PET Plastic Bottles", price: "₹12/kg", conf: "99.1%" },
+            { name: "Aluminium Cans", price: "₹110/kg", conf: "96.5%" }
+        ];
+
+        scanBtn.addEventListener('click', () => {
+            // UI States
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '⚙️ Processing...';
+            scanLine.style.display = 'block';
+            resultPanel.style.display = 'none';
+
+            // Simulate heavy processing
+            setTimeout(() => {
+                scanLine.style.display = 'none';
+                scanBtn.innerHTML = '🔍 Analyze Subject';
+                scanBtn.disabled = false;
+
+                // Pick random result for simulation
+                const res = mockResults[Math.floor(Math.random() * mockResults.length)];
+                document.getElementById('res-material').innerText = res.name;
+                document.getElementById('res-price').innerText = res.price;
+                document.getElementById('res-confidence').innerText = `✓ ${res.conf} Confidence Match`;
+
+                resultPanel.style.display = 'block';
+                resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
