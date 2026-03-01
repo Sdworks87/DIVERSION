@@ -35,6 +35,10 @@
 
   window.auth = {
     isLoggedIn: function () {
+      if (new URLSearchParams(window.location.search).get('logout') === 'true') {
+        this.logout();
+        return false;
+      }
       return !!getToken();
     },
     getRole: getRole,

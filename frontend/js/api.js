@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = '';
+  const API_BASE = 'http://localhost:3000';
 
   function getToken() {
     return localStorage.getItem('scrapchain_token');

@@ -1,24 +1,5 @@
 (function () {
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mouseX = 0,
-    mouseY = 0,
-    ringX = 0,
-    ringY = 0;
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursor.style.left = mouseX - 6 + 'px';
-    cursor.style.top = mouseY - 6 + 'px';
-  });
-  function animateRing() {
-    ringX += (mouseX - ringX - 20) * 0.12;
-    ringY += (mouseY - ringY - 20) * 0.12;
-    ring.style.left = ringX + 'px';
-    ring.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
+
 
   const ticker = document.getElementById('ticker');
   const rateGrid = document.getElementById('rate-grid');
@@ -135,14 +116,5 @@
     });
   });
 
-  document.querySelectorAll('a, button, .feature-item, .eco-card, .stat-card').forEach((el) => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.transform = 'scale(2.5)';
-      ring.style.transform = 'scale(1.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.transform = 'scale(1)';
-      ring.style.transform = 'scale(1)';
-    });
-  });
+
 })();

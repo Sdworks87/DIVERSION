@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Reviews — ScrapChain</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .dash {
+            padding: 120px 48px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dash h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .dash .sub {
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        .dash-card {
+            background: var(--mid);
+            border: 1px solid rgba(200, 241, 53, 0.15);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .dash-card h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .dash label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .dash input,
+        .dash textarea,
+        .dash select {
+            width: 100%;
+            background: var(--soil);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            color: var(--sand);
+            padding: 14px 18px;
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dash textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .dash .btn {
+            background: var(--lime);
+            color: var(--dark);
+            padding: 14px 24px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .dash .btn:hover {
+            background: var(--rust);
+            color: #fff;
+        }
+
+        .dash .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--lime);
+            color: var(--lime);
+        }
+
+        .dash .btn-ghost:hover {
+            background: rgba(200, 241, 53, 0.1);
+        }
+
+        .review-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .review-item {
+            padding: 16px;
+            border-bottom: 1px solid rgba(200, 241, 53, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--lime);
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .review-body {
+            color: var(--sand);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dash">
+        <nav
+            style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,0.1);display:flex;justify-content:space-between;align-items:center;z-index:100;">
+            <div style="display:flex;gap:24px;align-items:center;">
+                <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+                <a href="citizen.html" style="color:var(--sand);text-decoration:none;font-size:14px;">← Back to Dash</a>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center;">
+                <span id="userName" style="color:var(--muted);"></span>
+                <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+            </div>
+        </nav>
+
+        <h1>Citizen Reviews</h1>
+        <p class="sub">Share your experience with ScrapChain pickups and kabadi-walas.</p>
+
+        <div class="dash-card">
+            <h2>Post a Review</h2>
+            <form id="reviewForm">
+                <label for="reviewTitle">Title / Topic</label>
+                <input type="text" id="reviewTitle" required placeholder="E.g. Great pickup experience!">
+
+                <label for="reviewBody">Your Review</label>
+                <textarea id="reviewBody" required placeholder="Write your thoughts here..."></textarea>
+
+                <button type="submit" class="btn">Submit Review</button>
+            </form>
+        </div>
+
+        <div class="dash-card">
+            <h2>Recent Reviews</h2>
+            <ul class="review-list" id="reviewList">
+                <!-- Mock reviews to display initially -->
+                <li class="review-item">
+                    <div class="review-header">
+                        <span class="review-author">Aarti S.</span>
+                        <span class="review-date">Today</span>
+                    </div>
+                    <div class="review-body">
+                        <strong>Fast and seamless!</strong>
+                        <p>The kabadi-wala arrived exactly on time. The digital scale made everything so transparent,
+                            and I got my UPI payment instantly.</p>
+                    </div>
+                </li>
+                <li class="review-item">
+                    <div class="review-header">
+                        <span class="review-author">Ramesh K.</span>
+                        <span class="review-date">Yesterday</span>
+                    </div>
+                    <div class="review-body">
+                        <strong>Good price for E-waste</strong>
+                        <p>Finally a reliable way to dispose of old electronics and actually get a fair market rate for
+                            them.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/toast.js"></script>
+    <script>
+        if (!auth.isLoggedIn() || auth.getRole() !== 'citizen') {
+            window.location.href = '../auth/login.html?next=citizen-reviews';
+        }
+        const user = JSON.parse(localStorage.getItem('scrapchain_user') || '{}');
+        document.getElementById('userName').textContent = user.name || user.email || '';
+        document.getElementById('logoutBtn').onclick = () => auth.logout();
+
+        document.getElementById('reviewForm').onsubmit = (e) => {
+            e.preventDefault();
+            const title = document.getElementById('reviewTitle').value;
+            const body = document.getElementById('reviewBody').value;
+
+            const ul = document.getElementById('reviewList');
+            const li = document.createElement('li');
+            li.className = 'review-item';
+            li.innerHTML = `
+      <div class="review-header">
+        <span class="review-author">${user.name || 'You'}</span>
+        <span class="review-date">Just now</span>
+      </div>
+      <div class="review-body">
+        <strong>${title}</strong>
+        <p>${body}</p>
+      </div>
+    `;
+            ul.insertBefore(li, ul.firstChild);
+
+            document.getElementById('reviewForm').reset();
+            if (window.toast) toast.success('Review posted successfully!');
+            else alert('Review posted successfully!');
+        };
+    </script>
+</body>
+
+</html>

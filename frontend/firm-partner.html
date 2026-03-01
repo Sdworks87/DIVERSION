@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Firm — ScrapChain</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dash {
+            padding: 120px 48px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dash h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .dash .sub {
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        .dash-card {
+            background: var(--mid);
+            border: 1px solid rgba(200, 241, 53, 0.15);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .dash-card h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .dash label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .dash input,
+        .dash textarea,
+        .dash select {
+            width: 100%;
+            background: var(--soil);
+            border: 1px solid rgba(200, 241, 53, 0.2);
+            color: var(--sand);
+            padding: 14px 18px;
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dash textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .dash .btn {
+            background: var(--lime);
+            color: var(--dark);
+            padding: 14px 24px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .dash .btn:hover {
+            background: var(--rust);
+            color: #fff;
+        }
+
+        .dash .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--lime);
+            color: var(--lime);
+        }
+
+        .dash .btn-ghost:hover {
+            background: rgba(200, 241, 53, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dash">
+        <nav
+            style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,0.1);display:flex;justify-content:space-between;align-items:center;z-index:100;">
+            <div style="display:flex;gap:24px;align-items:center;">
+                <a href="index.html" class="logo">Scrap<span>Chain</span></a>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center;">
+                <button class="btn btn-ghost" onclick="window.location.href='index.html'">Back Home</button>
+            </div>
+        </nav>
+
+        <h1>Partner Firm Inquiry</h1>
+        <p class="sub">Looking to invest, acquire verified EPR tags, or buy bulk scrap? Let's talk.</p>
+
+        <div class="dash-card">
+            <h2>Contact Us</h2>
+            <form id="partnerForm">
+                <div style="display:flex;gap:20px;">
+                    <div style="flex:1">
+                        <label for="pName">Full Name</label>
+                        <input type="text" id="pName" required placeholder="John Doe">
+                    </div>
+                    <div style="flex:1">
+                        <label for="pCompany">Company Name</label>
+                        <input type="text" id="pCompany" required placeholder="Acme Recycling">
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:20px;">
+                    <div style="flex:1">
+                        <label for="pEmail">Email Address</label>
+                        <input type="email" id="pEmail" required placeholder="investor@example.com">
+                    </div>
+                    <div style="flex:1">
+                        <label for="pRevenue">Annual Revenue (INR)</label>
+                        <select id="pRevenue" required>
+                            <option value="">Select Range...</option>
+                            <option value="<1cr">Less than ₹1 Cr</option>
+                            <option value="1-10cr">₹1 Cr - ₹10 Cr</option>
+                            <option value="10-50cr">₹10 Cr - ₹50 Cr</option>
+                            <option value="50cr+">₹50 Cr +</option>
+                            <option value="investment">I am an Investor (No Revenue limit)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="pInvestment">Target Investment/Purchase capacity</label>
+                <input type="text" id="pInvestment" required
+                    placeholder="e.g. 5,000 Tonnes PET Monthly, or ₹5Cr equity investment">
+
+                <label for="pDetails">Additional Details</label>
+                <textarea id="pDetails" required
+                    placeholder="Tell us more about how you want to partner with ScrapChain..."></textarea>
+
+                <button type="submit" class="btn" id="submitBtn">Submit Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/toast.js"></script>
+    <script>
+        document.getElementById('partnerForm').onsubmit = (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Sent Successfully! We will contact you soon.';
+            btn.style.background = '#28ca41';
+
+            // reset form visually
+            document.getElementById('partnerForm').reset();
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 4000);
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kabadi-wala Panel — ScrapChain</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .dash {
+            padding: 120px 48px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dash h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .dash .sub {
+            color: var(--muted);
+            margin-bottom: 40px;
+        }
+
+        .dash-card {
+            background: var(--mid);
+            border: 1px solid rgba(200, 241, 53, 0.15);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .dash-card h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .dash .btn {
+            background: var(--lime);
+            color: var(--dark);
+            padding: 14px 24px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .dash .btn:hover {
+            background: var(--rust);
+            color: #fff;
+        }
+
+        .dash .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--lime);
+            color: var(--lime);
+        }
+
+        .dash .btn-ghost:hover {
+            background: rgba(200, 241, 53, 0.1);
+        }
+
+        .list-ui {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .list-item {
+            padding: 16px;
+            border-bottom: 1px solid rgba(200, 241, 53, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .ai-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            text-align: center;
+            border: 1px dashed var(--lime);
+            padding: 32px;
+            background: rgba(200, 241, 53, 0.05);
+        }
+
+        .ai-icon {
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dash">
+        <nav
+            style="position:fixed;top:0;left:0;right:0;background:var(--dark);padding:20px 48px;border-bottom:1px solid rgba(200,241,53,0.1);display:flex;justify-content:space-between;align-items:center;z-index:100;">
+            <div style="display:flex;gap:24px;align-items:center;">
+                <a href="../index.html" class="logo">Scrap<span>Chain</span></a>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center;">
+                <button class="btn btn-ghost" onclick="window.location.href='../index.html'">Back Home</button>
+            </div>
+        </nav>
+
+        <h1>Kabadi-wala Pro Zone</h1>
+        <p class="sub">Log your collections, view recent claims, and let AI highlight your top products.</p>
+
+        <div class="dash-card">
+            <h2>Recent Claims & Purchases</h2>
+            <ul class="list-ui">
+                <li class="list-item">
+                    <div>
+                        <strong style="color:var(--lime);">Iron Scrap (250kg)</strong><br>
+                        <span style="font-size:12px;color:var(--muted);">Bought from: #C-4522 · Today</span>
+                    </div>
+                    <span style="font-weight:bold;">₹7,000</span>
+                </li>
+                <li class="list-item">
+                    <div>
+                        <strong style="color:var(--lime);">E-Waste PCB (15kg)</strong><br>
+                        <span style="font-size:12px;color:var(--muted);">Bought from: #C-1983 · Yesterday</span>
+                    </div>
+                    <span style="font-weight:bold;">₹9,750</span>
+                </li>
+                <li class="list-item">
+                    <div>
+                        <strong style="color:var(--lime);">PET Plastics (120kg)</strong><br>
+                        <span style="font-size:12px;color:var(--muted);">Claim Sent to Recycler HQ</span>
+                    </div>
+                    <span style="font-weight:bold;">₹1,440</span>
+                </li>
+            </ul>
+            <button class="btn btn-ghost" style="margin-top:20px;width:100%;">+ View Full Ledger</button>
+        </div>
+
+        <div class="dash-card">
+            <h2>Feature Yourself AI <span
+                    style="font-size:12px;color:var(--rust);background:rgba(255,95,95,0.1);padding:2px 6px;border-radius:4px;vertical-align:middle;margin-left:8px;">BETA</span>
+            </h2>
+            <p style="color:var(--muted);font-size:14px;margin-bottom:20px;">Use our AI Vision model to identify
+                high-value scrap in your inventory automatically and list it directly to industrial buyers for a
+                premium.</p>
+
+            <div class="ai-box">
+                <div class="ai-icon">📸🤖</div>
+                <h3 style="font-family:'Bebas Neue',sans-serif;font-size:24px;">Upload Camera Feed</h3>
+                <p style="font-size:14px;color:var(--muted);">Point your camera at your scrap pile to instantly
+                    inventory your stock and match with local factory demand.</p>
+                <button class="btn" onclick="alert('Starting AI camera analysis mode... (Simulation)')">Launch AI
+                    Scanner</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
