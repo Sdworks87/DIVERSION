@@ -1,6 +1,6 @@
 
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
+  // Custom cursor - DISABLED
+  /* const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
   document.addEventListener('mousemove', e => {
@@ -15,7 +15,7 @@
     ring.style.top = ringY + 'px';
     requestAnimationFrame(animateRing);
   }
-  animateRing();
+  animateRing(); */
 
   // Ticker
   const materials = [
@@ -53,8 +53,8 @@
     });
   });
 
-  // Cursor scale on interactive elements
-  document.querySelectorAll('a, button, .feature-item, .eco-card, .stat-card').forEach(el => {
+  // Cursor scale on interactive elements - DISABLED
+  /* document.querySelectorAll('a, button, .feature-item, .eco-card, .stat-card').forEach(el => {
     el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2.5)'; ring.style.transform = 'scale(1.5)'; });
     el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
-  });
+  }); */
