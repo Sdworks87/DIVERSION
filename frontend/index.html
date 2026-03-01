@@ -17,18 +17,25 @@
 
   <nav>
     <a href="/" class="logo">Scrap<span>Chain</span></a>
-    <ul class="nav-links">
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="#platform">Platform</a></li>
-      <li><a href="#ecosystem">Ecosystem</a></li>
-      <li><a href="dashboards/citizen-reviews.html">Citizen Reviews</a></li>
-      <li><a href="dashboards/kabadi-panel.html">Kabadi Panel</a></li>
-      <li><a href="firm-partner.html">Partner Firm</a></li>
-    </ul>
-    <div style="display:flex;gap:12px;align-items:center;">
-      <a href="auth/login.html" class="nav-cta btn-ghost"
-        style="background:transparent;border:1px solid var(--lime);">Login</a>
-      <a href="auth/register.html" class="nav-cta">Get Started</a>
+    <button class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-container" id="navContainer">
+      <ul class="nav-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#ecosystem">Ecosystem</a></li>
+        <li><a href="dashboards/citizen-reviews.html">Citizen Reviews</a></li>
+        <li><a href="dashboards/kabadi-panel.html">Kabadi Panel</a></li>
+        <li><a href="firm-partner.html">Partner Firm</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <a href="auth/login.html" class="nav-cta btn-ghost"
+          style="background:transparent;border:1px solid var(--lime);">Login</a>
+        <a href="auth/register.html" class="nav-cta">Get Started</a>
+      </div>
     </div>
   </nav>
 
@@ -396,6 +403,25 @@
       <span>Built in India 🇮🇳 — Closing the loop since 2024</span>
     </div>
   </footer>
+
+  <script>
+    // Mobile hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navContainer = document.getElementById('navContainer');
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        navContainer.classList.toggle('active');
+        hamburger.classList.toggle('active');
+      });
+      // Close menu when a link is clicked
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          navContainer.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+    }
+  </script>
 
   <script src="js/toast.js"></script>
   <script src="js/landing.js"></script>
